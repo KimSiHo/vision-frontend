@@ -1,0 +1,21 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "poky-arm",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "/home/sihokim/bin/cross-toolchain/poky-sdk/sysroots/x86_64-customnuxsdk-linux/usr/share/cmake/OEToolchainConfig.cmake",
+        "OE_QMAKE_PATH_EXTERNAL_HOST_BINS": "/home/sihokim/bin/cross-toolchain/poky-sdk/sysroots/x86_64-customnuxsdk-linux/usr/bin"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "poky-arm",
+      "configurePreset": "poky-arm",
+      "verbose": true
+    }
+  ]
+}
