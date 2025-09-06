@@ -1,4 +1,4 @@
-#include "detection_model.hpp"
+#include "models/detection_model.hpp"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -43,13 +43,9 @@ QHash<int, QByteArray> DetectionModel::roleNames() const {
 }
 
 void DetectionModel::processInferenceJson(const QByteArray &jsonData) {
-    spdlog::debug("DetectionModel: Processing new JSON data.");
-
-    // JSON 원문 로그 (너무 길면 trace 레벨 권장)
-    spdlog::trace("Raw JSON: {}", jsonData.toStdString());
-
     beginResetModel();
     m_detections.clear();
+    spdlog::debug("Raw JSON: {}", jsonData.toStdString());
 
     QJsonParseError err;
     const QJsonDocument doc = QJsonDocument::fromJson(jsonData, &err);
@@ -60,31 +56,30 @@ void DetectionModel::processInferenceJson(const QByteArray &jsonData) {
     }
 
     if (doc.isObject()) {
-        const QJsonArray detectionsArray = doc.object()["detections"].toArray();
+        const QJsonArray detectionsArray = doc.object()["objects"].toArray();
         spdlog::debug("Parsed detections count: {}", detectionsArray.size());
 
         for (const auto &val : detectionsArray) {
-            QJsonObject obj = val.toObject();
-            QJsonArray boxArray = obj["box"].toArray();
+    		QJsonObject obj = val.toObject();
 
-            QString label = obj["label"].toString();
-            double conf   = obj["confidence"].toDouble();
+    		QString label = obj["label"].toString();
+    		double conf   = obj["confidence"].toDouble();
 
-            spdlog::debug("Detection: label={} conf={} box=[{:.2f}, {:.2f}, {:.2f}, {:.2f}]",
-                          label.toStdString(),
-                          conf,
-                          boxArray[0].toDouble(),
-                          boxArray[1].toDouble(),
-                          boxArray[2].toDouble(),
-                          boxArray[3].toDouble());
+            QJsonObject boxObject = obj["box"].toObject();
+    		double x = boxObject["x"].toDouble();
+    		double y = boxObject["y"].toDouble();
+    		double w = boxObject["w"].toDouble();
+    		double h = boxObject["h"].toDouble();
 
-            m_detections.append({
-                label,
-                conf,
-                QRectF(boxArray[0].toDouble(), boxArray[1].toDouble(),
-                       boxArray[2].toDouble(), boxArray[3].toDouble())
-            });
-        }
+    		spdlog::debug("Detection: label={} conf={} box=[x:{:.2f}, y:{:.2f}, w:{:.2f}, h:{:.2f}]",
+		                  label.toStdString(), conf, x, y, w, h);
+
+    		m_detections.append({
+        			label,
+        			conf,
+        			QRectF(x, y, w, h)
+    		});
+		}
     }
 
     endResetModel();

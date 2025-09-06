@@ -1,4 +1,4 @@
-#include "command_controller.hpp"
+#include "controllers/command_controller.hpp"
 
 #include <spdlog/spdlog.h>
 #include <vision_common/pub_socket.hpp>
@@ -19,4 +19,6 @@ QString CommandController::sendCommand(const QString& cmd) {
         return QString::fromStdString(
             std::string(static_cast<char*>(reply.data()), reply.size()));
     }
+
+    return QStringLiteral("ERROR: no reply received");
 }

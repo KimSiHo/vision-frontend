@@ -1,4 +1,4 @@
-#include "vision_controller.hpp"
+#include "controllers/vision_controller.hpp"
 
 #include <spdlog/spdlog.h>
 #include <vision_common/constants.hpp>
@@ -6,7 +6,7 @@
 VisionController::VisionController(zmq::context_t& ctx, QObject* parent)
     : QObject(parent),
     sub_(ctx, VisionCommon::AI_RESULTS_ENDPOINT, VisionCommon::TOPIC_DETECTIONS) {
-    spdlog::info("[Front] SUB connected to {}", VisionCommon::AI_RESULTS_ENDPOINT);
+    spdlog::info("SUB connected to {}", VisionCommon::AI_RESULTS_ENDPOINT);
 }
 
 VisionController::~VisionController() { stop(); }
@@ -23,7 +23,7 @@ void VisionController::stop() {
 }
 
 void VisionController::run() {
-    spdlog::info("[Front] VisionController listening (SUB)");
+    spdlog::info("VisionController listening (SUB)");
 
     while (running_) {
         auto msg = sub_.receive();

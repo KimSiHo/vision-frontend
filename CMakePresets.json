@@ -1,21 +1,41 @@
 {
-  "version": 6,
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
   "configurePresets": [
     {
-      "name": "poky-arm",
+      "name": "poky-sdk",
+      "displayName": "Cross Build with Poky SDK (x86_64 → ARM)",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/${presetName}",
+      "binaryDir": "${sourceDir}/build/poky-sdk",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "/home/sihokim/bin/cross-toolchain/poky-sdk/sysroots/x86_64-customnuxsdk-linux/usr/share/cmake/OEToolchainConfig.cmake",
         "OE_QMAKE_PATH_EXTERNAL_HOST_BINS": "/home/sihokim/bin/cross-toolchain/poky-sdk/sysroots/x86_64-customnuxsdk-linux/usr/bin"
+      }
+    },
+    {
+      "name": "nvidia-target",
+      "displayName": "Native Build on NVIDIA Target (ARM)",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/nvidia-target",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_INSTALL_PREFIX": "/opt/vision-frontend",
+        "CMAKE_PREFIX_PATH": "/opt/vision-common/lib/cmake"
       }
     }
   ],
   "buildPresets": [
     {
-      "name": "poky-arm",
-      "configurePreset": "poky-arm",
-      "verbose": true
+      "name": "poky-sdk",
+      "configurePreset": "poky-sdk"
+    },
+    {
+      "name": "nvidia-target",
+      "configurePreset": "nvidia-target"
     }
   ]
 }

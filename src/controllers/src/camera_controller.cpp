@@ -1,4 +1,4 @@
-#include "camera_controller.hpp"
+#include "controllers/camera_controller.hpp"
 
 #include <QQuickWindow>
 #include <QQuickItem>
@@ -14,7 +14,7 @@ CameraController::~CameraController() {
 void CameraController::startPipeline() {
     GstElement* pipeline = camera_service_->get_pipeline();
     if (!pipeline) {
-        spdlog::warn("Pipeline is not existing.");
+        spdlog::error("Pipeline is not existing.");
         return;
     }
 
@@ -22,7 +22,6 @@ void CameraController::startPipeline() {
     if (!sink) {
         spdlog::error("Failed to get qmlglsink element from pipeline.");
         gst_object_unref(pipeline);
-        pipeline = nullptr;
         return;
     }
 
@@ -30,27 +29,26 @@ void CameraController::startPipeline() {
         spdlog::error("QML root objects are not ready.");
         gst_object_unref(sink);
         gst_object_unref(pipeline);
-        pipeline = nullptr;
         return;
     }
 
-    QQuickWindow* rootObject = qobject_cast<QQuickWindow*>(engine_->rootObjects().first());
-    QQuickItem* videoItem = rootObject->findChild<QQuickItem*>("video");
+    QQuickWindow* root = qobject_cast<QQuickWindow*>(engine_->rootObjects().first());
+    QQuickItem* videoItem = root->findChild<QQuickItem*>("video", Qt::FindChildrenRecursively);
 
     if (!videoItem) {
-        spdlog::error("GLVideoItem with objectName 'video' not found in QML.");
+        spdlog::warn("VideoItem not yet available, will retry later");
         gst_object_unref(sink);
         gst_object_unref(pipeline);
-        pipeline = nullptr;
         return;
     }
 
-    g_object_set(sink, "widget", videoItem, NULL);
+    g_object_set(sink, "widget", videoItem, nullptr);
     gst_object_unref(sink);
 
     spdlog::info("Starting GStreamer pipeline...");
     gst_element_set_state(pipeline, GST_STATE_PLAYING);
 }
+
 
 void CameraController::stopPipeline() {
     GstElement* pipeline = camera_service_->get_pipeline();

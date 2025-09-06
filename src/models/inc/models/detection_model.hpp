@@ -3,7 +3,7 @@
 #include <QAbstractListModel>
 #include <QList>
 
-#include "detection_item.hpp"
+#include "models/detection_item.hpp"
 
 class DetectionModel : public QAbstractListModel {
     Q_OBJECT

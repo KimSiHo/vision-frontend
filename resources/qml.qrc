@@ -1,5 +1,17 @@
 <RCC>
-    <qresource prefix="/">
-        <file>qml/main.qml</file>
+    <qresource prefix="/qml">
+        <file alias="app.qml">qml/app.qml</file>
+        <file alias="home.qml">qml/home.qml</file>
+        <file alias="vision.qml">qml/vision.qml</file>
+        <file alias="map.qml">qml/map.qml</file>
+        <file alias="music.qml">qml/music.qml</file>
+        <file alias="bluetooth.qml">qml/bluetooth.qml</file>
+    </qresource>
+
+    <qresource prefix="/icons">
+        <file alias="map.png">icons/map.png</file>
+        <file alias="camera.png">icons/camera.png</file>
+        <file alias="music.png">icons/music.png</file>
+        <file alias="bluetooth.png">icons/bluetooth.png</file>
     </qresource>
 </RCC>

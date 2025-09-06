@@ -1,8 +1,9 @@
 #pragma once
 
-#include <gst/gst.h>
 #include <thread>
 #include <atomic>
+
+#include <gst/gst.h>
 
 class CameraService {
 public:
@@ -20,7 +21,6 @@ private:
     bool create_elements();
     void configure_elements();
     bool link_elements();
-
     void bus_watch_loop();
 
     GstElement *pipeline_{nullptr}, *shmsrc_{nullptr}, *caps_src_{nullptr}, *nvvidconv_{nullptr}, *caps_rgba_{nullptr}, *glupload_{nullptr}, *sink_{nullptr};
