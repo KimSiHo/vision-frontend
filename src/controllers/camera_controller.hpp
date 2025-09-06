@@ -4,11 +4,11 @@
 #include <QQmlApplicationEngine>
 #include <gst/gst.h>
 
-#include "services/camera_service.hpp"
+#include "camera_service.hpp"
 
-class CameraController : public QObject
-{
+class CameraController : public QObject {
     Q_OBJECT
+
 public:
     explicit CameraController(QQmlApplicationEngine *engine, CameraService *camera_service, QObject *parent = nullptr);
     ~CameraController();

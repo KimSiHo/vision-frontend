@@ -1,8 +1,9 @@
 #pragma once
 
-#include <gst/gst.h>
 #include <thread>
 #include <atomic>
+
+#include <gst/gst.h>
 
 class CameraService {
 public:

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <thread>
+#include <atomic>
 
 #include <QObject>
-#include <atomic>
 #include <zmq.hpp>
 #include <vision_common/sub_socket.hpp>
 
@@ -18,7 +18,7 @@ public:
     Q_INVOKABLE void stop();
 
 signals:
-    void detectionsReceived(QString json);
+    void detectionsReceived(const QByteArray& jsonData);
 
 private:
     void run();
