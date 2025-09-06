@@ -23,7 +23,6 @@ int main(int argc, char *argv[]) {
 
     spdlog::info("Application started. Current log level: {}", spdlog::level::to_string_view(spdlog::get_level()));
 
-    // --- 실제 애플리케이션 코드 ---
     spdlog::debug("This is a debug message.");
     spdlog::info("This is an info message.");
     spdlog::warn("This is a warning message.");
