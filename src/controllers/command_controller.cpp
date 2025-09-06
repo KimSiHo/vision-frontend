@@ -19,4 +19,6 @@ QString CommandController::sendCommand(const QString& cmd) {
         return QString::fromStdString(
             std::string(static_cast<char*>(reply.data()), reply.size()));
     }
+
+    return QStringLiteral("ERROR: no reply received");
 }

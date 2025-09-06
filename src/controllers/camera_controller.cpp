@@ -14,7 +14,7 @@ CameraController::~CameraController() {
 void CameraController::startPipeline() {
     GstElement* pipeline = camera_service_->get_pipeline();
     if (!pipeline) {
-        spdlog::warn("Pipeline is not existing.");
+        spdlog::error("Pipeline is not existing.");
         return;
     }
 
